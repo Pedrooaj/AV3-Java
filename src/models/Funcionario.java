@@ -1,21 +1,32 @@
 package models;
+import database.*;
+
+import java.io.IOException;
 import java.util.*;
 
 
 public class Funcionario extends Pessoa {
     private int matricula;
     private Date horaTrabalho;
+    private Connection<Funcionario> connection;
 
-    public Funcionario(String nome, String cpf, String email, int registro, Date horaTrabalho, int matricula) {
+    public Funcionario(String nome, String cpf, String email, Date horaTrabalho, int matricula) {
         this.horaTrabalho = horaTrabalho;
         this.matricula = matricula;
-        super(nome, cpf, email);
+        this.connection = new Connection<>();
+       super(nome, cpf, email);
     }
 
     // Métodos da classe
 
-    public void cadastrar(Funcionario funcionario){
-        // Retorna booleano
+    public boolean cadastrar(Funcionario funcionario) throws IOException{
+        String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail() + ";" + getHoraTrabalho();
+        if (this.connection.post(novoFuncionario, "funcionarios")) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
     public void editar(Funcionario funcionario){

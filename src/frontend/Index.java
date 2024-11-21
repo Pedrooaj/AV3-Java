@@ -1,10 +1,11 @@
 package frontend;
 
 import java.io.IOException;
-
+import java.time.LocalTime;
 import java.util.Scanner;
 
 import models.Ator;
+import models.Funcionario;
 
 public class Index {
     private Scanner scanner;
@@ -158,6 +159,30 @@ public class Index {
 
             if(escolha.equals("0")){
                 break;
+            }
+            if(escolha.equals("1")){
+                System.out.println("Registrando Funcionario");
+                System.out.println("----------------------------------------");
+                System.out.println("Nome do funcionario");
+                String nome = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                System.out.println("CPF do funcionario");
+                String cpf = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                System.out.println("Email do funcionario");
+                String email = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                System.out.println("Jornada de trabalho");
+                String horas = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                System.out.println("Mátricula/Identificador do funcionario");
+                String matricula = this.scanner.nextLine();
+
+                
+
+                //Funcionario funcionario = new Funcionario(nome, cpf, email, horas, Integer.parseInt(matricula));
+          
+                
             }
         }
     }

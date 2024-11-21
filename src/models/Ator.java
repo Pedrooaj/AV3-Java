@@ -7,7 +7,6 @@ import database.Connection;
 
 public class Ator extends Pessoa {
     private int registro;
-
     private Connection<Ator> connection;
 
     public Ator(String nome, String cpf, String email, int registro) {

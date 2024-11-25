@@ -1,46 +1,54 @@
 package models;
+
 import database.*;
-
 import java.io.IOException;
-import java.util.*;
-
+import java.time.LocalTime;
 
 public class Funcionario extends Pessoa {
     private int matricula;
-    private Date horaTrabalho;
+    private LocalTime horaTrabalho;
     private Connection<Funcionario> connection;
 
-    public Funcionario(String nome, String cpf, String email, Date horaTrabalho, int matricula) {
+    public Funcionario(String nome, String cpf, String email, LocalTime horaTrabalho, int matricula) {
         this.horaTrabalho = horaTrabalho;
         this.matricula = matricula;
         this.connection = new Connection<>();
-       super(nome, cpf, email);
+        super(nome, cpf, email);
     }
 
     // Métodos da classe
 
-    public boolean cadastrar(Funcionario funcionario) throws IOException{
-        String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail() + ";" + getHoraTrabalho();
+    public boolean cadastrar() throws IOException {
+        String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail() + ";"
+                + getHoraTrabalho();
         if (this.connection.post(novoFuncionario, "funcionarios")) {
             return true;
         } else {
             return false;
         }
-        
+
     }
 
-    public void editar(Funcionario funcionario){
-        // retorna booleano
+    public boolean editar(Funcionario funcionario) throws IOException {
+
+        String novoFuncionario = Integer.toString(funcionario.getMatricula()).toLowerCase() + ";"
+                + funcionario.getNome().toLowerCase() + ";" + funcionario.getCpf().toLowerCase() + ";"
+                + funcionario.getEmail().toLowerCase() + ";" + funcionario.getHoraTrabalho();
+
+        if (this.connection.put(novoFuncionario.toLowerCase(), "funcionarioes")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void consultar(Funcionario funcionario){
+    public void consultar(Funcionario funcionario) {
         // retorna Funcionario
     }
 
-    public void listar(){
+    public void listar() {
         // retorna ArrayList
     }
-
 
     // Encapsulamento - Getters/Setters
     public void setMatricula(int matricula) {
@@ -51,11 +59,11 @@ public class Funcionario extends Pessoa {
         return matricula;
     }
 
-    public void setHoraTrabalho(Date horaTrabalho) {
+    public void setHoraTrabalho(LocalTime horaTrabalho) {
         this.horaTrabalho = horaTrabalho;
     }
 
-    public Date getHoraTrabalho() {
+    public LocalTime getHoraTrabalho() {
         return horaTrabalho;
     }
 

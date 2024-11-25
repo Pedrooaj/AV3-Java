@@ -2,15 +2,15 @@ package frontend;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
 import models.Ator;
 import models.Funcionario;
 
 public class Index {
     private Scanner scanner;
 
-    public Index(){
+    public Index() {
         this.scanner = new Scanner(System.in);
     }
 
@@ -33,7 +33,7 @@ public class Index {
             if (escolha.equals("2")) {
                 this.MenuFuncinarios();
             }
-            if(escolha.equals("3")){
+            if (escolha.equals("3")) {
                 this.Duvidas();
             }
 
@@ -42,12 +42,10 @@ public class Index {
                 break;
             }
 
-        
-
         }
     }
 
-    public void MenuAtores() throws IOException{
+    public void MenuAtores() throws IOException {
         while (true) {
             System.out.println("\nMenu de Atores:");
             System.out.println("----------------------------------------");
@@ -59,10 +57,10 @@ public class Index {
             System.out.println("----------------------------------------");
             String escolha = this.scanner.nextLine();
 
-            if(escolha.equals("0")){
+            if (escolha.equals("0")) {
                 break;
             }
-            if(escolha.equals("1")){
+            if (escolha.equals("1")) {
                 System.out.println("Registrando ator");
                 System.out.println("----------------------------------------");
                 System.out.println("Digite o nome do Ator");
@@ -78,21 +76,21 @@ public class Index {
                 int registro = this.scanner.nextInt();
                 System.out.println("----------------------------------------");
                 this.scanner.nextLine(); // consome a linha
-                
+
                 Ator ator = new Ator(nome, cpf, email, registro);
                 ator.cadastrar();
             }
 
-            if(escolha.equals("2")){
+            if (escolha.equals("2")) {
                 String id;
                 System.out.println("Editando ator");
                 System.out.println("----------------------------------------");
                 while (true) {
                     System.out.println("Identificador/Id que deseja editar:");
                     id = this.scanner.nextLine();
-                    if(id.matches("\\d+")){
+                    if (id.matches("\\d+")) {
                         break;
-                    }else{
+                    } else {
                         System.out.println("Id válidos contem somente números!");
                     }
                 }
@@ -105,12 +103,12 @@ public class Index {
                 System.out.println("----------------------------------------");
                 System.out.println("Email do ator");
                 String email = this.scanner.nextLine();
-            
+
                 Ator ator = new Ator(nome, cpf, email, Integer.parseInt(id));
                 ator.editar(ator);
             }
 
-            if(escolha.equals("3")){
+            if (escolha.equals("3")) {
                 System.out.println("Consultando ator");
                 System.out.println("----------------------------------------");
                 System.out.println("Digite o Identificador que deseja consultar: ");
@@ -119,7 +117,7 @@ public class Index {
                 Ator ator = new Ator(Integer.parseInt(id));
                 Ator info = ator.consultar(ator);
                 System.out.println("----------------------------------------");
-                if(info != null){
+                if (info != null) {
                     System.out.println("Ator encontrado");
                     System.out.println(info.getNome());
                     System.out.println(info.getCpf());
@@ -127,25 +125,25 @@ public class Index {
                 }
             }
 
-            if(escolha.equals("4")){
+            if (escolha.equals("4")) {
                 System.out.println("\nLista de Atores");
                 System.out.println("----------------------------------------");
                 Ator atores = new Ator();
 
-                for(Ator ator : atores.listar()){
+                for (Ator ator : atores.listar()) {
                     System.out.println("Registro " + ator.getRegistro());
                     System.out.println("Nome " + ator.getNome());
                     System.out.println("CPF " + ator.getCpf());
                     System.out.println("Email " + ator.getEmail());
                     System.out.println("----------------------------------------");
                 }
-   
+
             }
 
         }
     }
 
-    public void MenuFuncinarios() {
+    public void MenuFuncinarios()throws IOException {
         while (true) {
             System.out.println("Menu de Funcionarios: ");
             System.out.println("----------------------------------------");
@@ -157,10 +155,11 @@ public class Index {
             System.out.println("----------------------------------------");
             String escolha = this.scanner.nextLine();
 
-            if(escolha.equals("0")){
+            if (escolha.equals("0")) {
                 break;
             }
-            if(escolha.equals("1")){
+            if (escolha.equals("1")) {
+                LocalTime horas;
                 System.out.println("Registrando Funcionario");
                 System.out.println("----------------------------------------");
                 System.out.println("Nome do funcionario");
@@ -172,26 +171,43 @@ public class Index {
                 System.out.println("Email do funcionario");
                 String email = this.scanner.nextLine();
                 System.out.println("----------------------------------------");
-                System.out.println("Jornada de trabalho");
-                String horas = this.scanner.nextLine();
+                while (true) {
+                    System.out.println("Jornada de trabalho hh:mm:ss");
+                    
+                    // Lê a entrada do usuário
+                    String timeInput = this.scanner.nextLine();
+                    
+                    // Verifica se a entrada corresponde ao formato válido hh:mm:ss
+                    if (timeInput.matches("^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$")) {
+                        try {
+                            // Formata e converte a string em um objeto LocalTime
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                            horas = LocalTime.parse(timeInput, formatter);
+                            
+                            // Sai do loop se a entrada for válida
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Erro ao processar o horário.");
+                        }
+                    } else {
+                        System.out.println("Formato de horas inválido. Tente novamente!");
+                    }
+                }
                 System.out.println("----------------------------------------");
                 System.out.println("Mátricula/Identificador do funcionario");
                 String matricula = this.scanner.nextLine();
 
-                
-
-                //Funcionario funcionario = new Funcionario(nome, cpf, email, horas, Integer.parseInt(matricula));
-          
-                
+                Funcionario funcionario = new Funcionario(nome, cpf, email, horas, Integer.parseInt(matricula));
+                funcionario.cadastrar();
             }
         }
     }
 
-    public void Duvidas(){
+    public void Duvidas() {
         while (true) {
-            System.out.println("Dúvidas");
             System.out.println("----------------------------------------");
-            System.out.println("Quaisquer dúvidas relacionada a este projeto ou algum outro entre em contato\nEmail: pedroantonio5735@gmail.com");
+            System.out.println(
+                    "Quaisquer dúvidas relacionada a este projeto ou algum outro entre em contato\nEmail: pedroantonio5735@gmail.com");
             System.out.println("Digite qualquer coisa para sair");
             this.scanner.nextLine();
             break;

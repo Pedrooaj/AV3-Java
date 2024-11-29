@@ -51,7 +51,7 @@ public class Ator extends Pessoa {
             String[] a = this.connection.get(id, "atores");
             return new Ator(a[1], a[2], a[3], Integer.parseInt(a[0]));
         } catch (Exception e) {
-            System.out.println("\nNão existe na base de dados");
+            System.out.println("Não existe na base de dados");
             return null;
         }
 

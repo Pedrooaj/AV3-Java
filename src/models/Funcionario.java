@@ -3,6 +3,7 @@ package models;
 import database.*;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Funcionario extends Pessoa {
     private int matricula;
@@ -12,8 +13,17 @@ public class Funcionario extends Pessoa {
     public Funcionario(String nome, String cpf, String email, LocalTime horaTrabalho, int matricula) {
         this.horaTrabalho = horaTrabalho;
         this.matricula = matricula;
-        this.connection = new Connection<>();
+        this.connection = new Connection<Funcionario>();
         super(nome, cpf, email);
+    }
+
+    public Funcionario(int matricula) {
+        this.matricula = matricula;
+        this.connection = new Connection<Funcionario>();
+    }
+
+    public Funcionario(){
+        this.connection = new Connection<Funcionario>();
     }
 
     // Métodos da classe
@@ -35,19 +45,40 @@ public class Funcionario extends Pessoa {
                 + funcionario.getNome().toLowerCase() + ";" + funcionario.getCpf().toLowerCase() + ";"
                 + funcionario.getEmail().toLowerCase() + ";" + funcionario.getHoraTrabalho();
 
-        if (this.connection.put(novoFuncionario.toLowerCase(), "funcionarioes")) {
+        if (this.connection.put(novoFuncionario.toLowerCase(), "funcionarios")) {
             return true;
         } else {
             return false;
         }
     }
 
-    public void consultar(Funcionario funcionario) {
-        // retorna Funcionario
+    public Funcionario consultar(Funcionario funcionario) throws IOException {
+        try {
+            String id = Integer.toString(funcionario.getMatricula()).toLowerCase();
+            String[] a = this.connection.get(id, "funcionarios");
+            return new Funcionario(a[1], a[2], a[3], LocalTime.parse(a[4]), Integer.parseInt(a[0]));
+        } catch (Exception e) {
+            System.out.println("Não existe na base de dados");
+            return null;
+        }
     }
 
-    public void listar() {
-        // retorna ArrayList
+    public ArrayList<Funcionario> listar() throws IOException{
+        try {
+            ArrayList<String> stringFuncionarios = this.connection.getAll("funcionarios");
+            ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+            for (String f : stringFuncionarios) {
+                String[] tempFuncionario = f.split(";");
+                Funcionario funcionario = new Funcionario(tempFuncionario[1],tempFuncionario[2],tempFuncionario[3] , LocalTime.parse(tempFuncionario[4]), Integer.parseInt(tempFuncionario[0]));
+                funcionarios.add(funcionario);
+            }
+ 
+            return funcionarios;
+        } catch (Exception e) {
+            System.out.println("Erro ao obter os dados");
+            throw e;
+        }
     }
 
     // Encapsulamento - Getters/Setters
@@ -56,7 +87,7 @@ public class Funcionario extends Pessoa {
     }
 
     public int getMatricula() {
-        return matricula;
+        return this.matricula;
     }
 
     public void setHoraTrabalho(LocalTime horaTrabalho) {

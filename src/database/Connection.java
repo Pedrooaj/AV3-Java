@@ -39,7 +39,7 @@ public class Connection<T> {
             return true;
         } else {
             bw.close();
-            System.out.println("\nIdentificador já existe!");
+            System.out.println("Identificador já existe!");
             return false;
         }
     }

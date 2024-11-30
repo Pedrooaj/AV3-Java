@@ -1,11 +1,13 @@
 package frontend;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import models.Ator;
 import models.Funcionario;
+import models.Sessao;
 
 public class Index {
     private Scanner scanner;
@@ -16,11 +18,12 @@ public class Index {
 
     public void iniciarMenu() throws IOException {
         while (true) {
-            System.out.println("\nSeja Bem Vindo há aplicação de Pedrooaj!");
             System.out.println("----------------------------------------");
-            System.out.println("1 - Atores");
-            System.out.println("2 - Funcionarios ");
-            System.out.println("3 - Dúvidas");
+            System.out.println("Seja Bem Vindo há aplicação de Pedrooaj!");
+            System.out.println("----------------------------------------");
+            System.out.println("1 - Atores            4 - Sessão");
+            System.out.println("2 - Funcionarios      5 - Filme");
+            System.out.println("3 - Dúvidas           6 - Gênero");
             System.out.println("0 - Sair");
             String escolha = this.scanner.nextLine();
 
@@ -36,6 +39,9 @@ public class Index {
             if (escolha.equals("3")) {
                 this.Duvidas();
             }
+            if (escolha.equals("4")) {
+                this.menuSessao();
+            }
 
             if (escolha.equals("0")) {
                 this.scanner.close();
@@ -47,7 +53,8 @@ public class Index {
 
     public void MenuAtores() throws IOException {
         while (true) {
-            System.out.println("\nMenu de Atores:");
+            System.out.println("----------------------------------------");
+            System.out.println("Menu de Atores:");
             System.out.println("----------------------------------------");
             System.out.println("1 - Cadastrar");
             System.out.println("2 - Editar");
@@ -61,6 +68,7 @@ public class Index {
                 break;
             }
             if (escolha.equals("1")) {
+                System.out.println("----------------------------------------");
                 System.out.println("Registrando ator");
                 System.out.println("----------------------------------------");
                 System.out.println("Digite o nome do Ator");
@@ -83,6 +91,7 @@ public class Index {
 
             if (escolha.equals("2")) {
                 String id;
+                System.out.println("----------------------------------------");
                 System.out.println("Editando ator");
                 System.out.println("----------------------------------------");
                 while (true) {
@@ -109,6 +118,7 @@ public class Index {
             }
 
             if (escolha.equals("3")) {
+                System.out.println("----------------------------------------");
                 System.out.println("Consultando ator");
                 System.out.println("----------------------------------------");
                 System.out.println("Digite o Identificador que deseja consultar: ");
@@ -122,7 +132,6 @@ public class Index {
                     System.out.println(info.getCpf());
                     System.out.println(info.getEmail());
                 }
-                System.out.println("----------------------------------------");
             }
 
             if (escolha.equals("4")) {
@@ -146,6 +155,7 @@ public class Index {
 
     public void MenuFuncinarios()throws IOException {
         while (true) {
+            System.out.println("----------------------------------------");
             System.out.println("Menu de Funcionarios: ");
             System.out.println("----------------------------------------");
             System.out.println("1 - Cadastrar");
@@ -161,6 +171,7 @@ public class Index {
             }
             if (escolha.equals("1")) {
                 LocalTime horas;
+                System.out.println("----------------------------------------");
                 System.out.println("Registrando Funcionario");
                 System.out.println("----------------------------------------");
                 System.out.println("Nome do funcionario");
@@ -198,6 +209,7 @@ public class Index {
             }else if(escolha.equals("2")){
                 String id;
                 LocalTime horas;
+                System.out.println("----------------------------------------");
                 System.out.println("Editando Funcionario");
                 System.out.println("----------------------------------------");
                 while (true) {
@@ -239,6 +251,7 @@ public class Index {
                 Funcionario funcionario = new Funcionario(nome, cpf, email, horas, Integer.parseInt(id));
                 funcionario.editar(funcionario);
             }else if(escolha.equals("3")){
+                System.out.println("----------------------------------------");
                 System.out.println("Consultando funcionario");
                 System.out.println("----------------------------------------");
                 System.out.println("Digite o Matricula/Id que deseja consultar: ");
@@ -271,6 +284,106 @@ public class Index {
                     }
                 }
 
+            }
+        }
+    }
+
+
+    public void menuSessao() throws IOException{
+
+        while (true) {
+            System.out.println("----------------------------------------");
+            System.out.println("Menu de Sessão");
+            System.out.println("----------------------------------------");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Editar");
+            System.out.println("3 - Consultar");
+            System.out.println("4 - Listar");
+            System.out.println("0 - Voltar");
+            System.out.println("----------------------------------------");
+            String escolha = this.scanner.nextLine();
+            if(escolha.equals("1")){
+                String funcionarioID;
+                String status;
+                String id;
+                String date;
+                System.out.println("Cadastro de Sessão");
+                System.out.println("----------------------------------------");
+                System.out.println("Digite o ID da Sessão");
+                while (true) {
+                    id = this.scanner.nextLine();
+                    if(id.matches("\\d+")){
+                        break;
+                    }else{
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                System.out.println("Digite a Data e Hora da Sessão yyyy-MM-ddTHH:mm:ss");
+                while (true) {
+                    date = this.scanner.nextLine();
+                    if(date.matches("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$")){
+                        break;
+                    }else{
+                        System.out.println("O formato valido e apenas yyyy-MM-ddTHH:mm:ss");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite a Matricula de um funcionario");
+                    funcionarioID = this.scanner.nextLine();
+                    if(funcionarioID.matches("\\d+")){
+                        Funcionario funcionario = new Funcionario(Integer.parseInt(funcionarioID));
+                        if (funcionario.consultar(funcionario) != null) {
+                            break;
+                        }else{
+                            System.out.println("Digite um funcionario válido");
+                            System.out.println("----------------------------------------");
+                        }
+                    }else{
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                System.out.println("Digite um Status Ativo/Inativo");
+                while (true) {
+                    status = this.scanner.nextLine();
+                    if(status.toLowerCase().equals("ativo") || status.toLowerCase().equals("inativo")){
+                        status = status.toLowerCase();
+                        break;
+                    }else{
+                        System.out.println("Status Válido são apenas Ativo/Inativo");
+                    }
+                }
+
+
+                Sessao sessao = new Sessao(new Funcionario(Integer.parseInt(funcionarioID)), null, null, Integer.parseInt(id), status, LocalDateTime.parse(date));
+                sessao.cadastrar();
+            }else if(escolha.equals("2")){
+                System.out.println("Menu de editar Sessão");
+            }
+            else if(escolha.equals("3")){
+                String id;
+                System.out.println("----------------------------------------");
+                System.out.println("Consultando Sessão");
+                System.out.println("----------------------------------------");
+                id = this.scanner.nextLine();
+
+                Sessao sessao = new Sessao(Integer.parseInt(id));
+                Sessao info = sessao.consultar(sessao);
+                if(info != null){
+                    DateTimeFormatter dataFormater = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                    System.out.println(info.getId());
+                    System.out.println(info.getStatus());
+                    System.out.println(dataFormater.format(info.getDataHora()));
+                    System.out.println(info.getFilme());
+                    System.out.println(info.getSala());
+                    System.out.println("Funcionario: " + info.getFuncionario().getNome());
+                }
+            }
+            
+            else if(escolha.equals("0")) {
+                break;
             }
         }
     }

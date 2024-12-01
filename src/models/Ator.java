@@ -28,21 +28,12 @@ public class Ator extends Pessoa {
     public boolean cadastrar() throws IOException {
         String novoAtor = Integer.toString(this.registro) + ";" + this.getNome()+ ";"
                 + this.getCpf() + ";" + this.getEmail();
-        if (this.connection.post(novoAtor, "atores")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.post(novoAtor, "atores");
     }
 
     public boolean editar(Ator ator) throws IOException {
         String novoAtor = Integer.toString(ator.getRegistro()) + ";" + ator.getNome() + ";" + ator.getCpf() + ";" + ator.getEmail();
-
-        if (this.connection.put(novoAtor.toLowerCase(), "atores")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.put(novoAtor.toLowerCase(), "atores");
     }
 
     public Ator consultar(Ator ator) throws IOException {
@@ -69,7 +60,7 @@ public class Ator extends Pessoa {
             }
 
             return atores;
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Erro ao obter os dados");
             throw e;
         }

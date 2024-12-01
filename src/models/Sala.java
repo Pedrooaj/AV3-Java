@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import database.Connection;
 
@@ -17,13 +18,13 @@ public class Sala {
         this.id = id;
         this.descricao = descricao;
         this.status = status;
-     
+
     }
 
     public Sala(int id) {
         this.connection = new Connection<Sala>();
         this.id = id;
-        
+
     }
 
     public Sala() {
@@ -34,11 +35,7 @@ public class Sala {
         String novaSala = Integer.toString(this.id) + ";" + Integer.toString(this.capacidade) + ";" + this.status + ";"
                 + this.descricao;
 
-        if (this.connection.post(novaSala.toLowerCase(), "salas")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.post(novaSala.toLowerCase(), "salas");
 
     }
 
@@ -54,15 +51,28 @@ public class Sala {
     }
 
     public boolean editar(Sala sala) throws IOException {
-        String novaSala = Integer.toString(sala.getId()) + ";" + Integer.toString(sala.getCapacidade()) + ";"
-                + sala.getStatus() + ";" + sala.getDescricao();
-        if (this.connection.put(novaSala.toLowerCase(), "salas")) {
-            return true;
-        } else {
-            return false;
-        }
+        String novaSala = Integer.toString(sala.getId()) + ";" + Integer.toString(sala.getCapacidade()) + ";" + sala.getStatus() + ";" + sala.getDescricao();
+        return this.connection.put(novaSala.toLowerCase(), "salas");
+
     }
 
+    public ArrayList<Sala> listar() throws IOException{
+        try {
+            ArrayList<String> stringSala = this.connection.getAll("salas");
+            ArrayList<Sala> salas = new ArrayList<>();
+
+            for (String s : stringSala) {
+                String[] tempSala = s.split(";");
+                Sala a = new Sala(Integer.parseInt(tempSala[0]), Integer.parseInt(tempSala[1]), tempSala[3], tempSala[2]);
+                salas.add(a);
+            }
+
+            return salas;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Erro ao obter os dados");
+            throw e;
+        }
+    }
     // Getters & Setters
 
     public void setCapacidade(int capacidade) {

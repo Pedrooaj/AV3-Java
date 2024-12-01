@@ -38,11 +38,7 @@ public class Sessao {
         String novaSessao =  Integer.toString(this.getId()) + ";" + "filme" + ";" + this.getStatus() + ";"
                 + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";" + Integer.toString(this.getSala().getId());
 
-        if (this.connection.post(novaSessao.toLowerCase(), "sessoes")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.post(novaSessao.toLowerCase(), "sessoes");
 
     }
 
@@ -53,7 +49,7 @@ public class Sessao {
             Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
             Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
             return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), getId(), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
@@ -61,11 +57,7 @@ public class Sessao {
 
     public boolean editar(Sessao sessao) throws IOException{
         String novaSessao =  Integer.toString(sessao.getId()) + ";" + "filme" + ";" + sessao.getStatus() + ";" + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" +  "sala";
-        if(this.connection.put(novaSessao.toLowerCase(), "sessoes")){
-            return true;
-        }else{
-            return false;
-        }
+        return this.connection.put(novaSessao.toLowerCase(), "sessoes");
     } 
 
 

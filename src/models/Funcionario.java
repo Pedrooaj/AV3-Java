@@ -31,11 +31,7 @@ public class Funcionario extends Pessoa {
     public boolean cadastrar() throws IOException {
         String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail() + ";"
                 + getHoraTrabalho();
-        if (this.connection.post(novoFuncionario, "funcionarios")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.post(novoFuncionario, "funcionarios");
 
     }
 
@@ -45,11 +41,7 @@ public class Funcionario extends Pessoa {
                 + funcionario.getNome()+ ";" + funcionario.getCpf() + ";"
                 + funcionario.getEmail() + ";" + funcionario.getHoraTrabalho();
 
-        if (this.connection.put(novoFuncionario, "funcionarios")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.connection.put(novoFuncionario, "funcionarios");
     }
 
     public Funcionario consultar(Funcionario funcionario) throws IOException {
@@ -75,7 +67,7 @@ public class Funcionario extends Pessoa {
             }
  
             return funcionarios;
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Erro ao obter os dados");
             throw e;
         }

@@ -2,6 +2,7 @@ package models;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import database.Connection;
 
@@ -27,14 +28,17 @@ public class Sessao {
     public Sessao(int id){
         this.id = id;
         this.connection = new Connection<Sessao>();
+    }
 
+    public Sessao(){
+        this.connection = new Connection<Sessao>();
     }
 
     public boolean cadastrar() throws IOException {
         String novaSessao =  Integer.toString(this.getId()) + ";" + "filme" + ";" + this.getStatus() + ";"
-                + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";" +  "sala";
+                + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";" + Integer.toString(this.getSala().getId());
 
-        if (this.connection.post(novaSessao, "sessoes")) {
+        if (this.connection.post(novaSessao.toLowerCase(), "sessoes")) {
             return true;
         } else {
             return false;
@@ -45,12 +49,44 @@ public class Sessao {
     public Sessao consultar(Sessao sessao) throws IOException{
         try {
             String id = Integer.toString(sessao.getId());
-            String s[] = this.connection.get(id, "sessoes");
-            Funcionario f = new Funcionario(Integer.parseInt(s[3]));
-            return new Sessao(f.consultar(f), new Sala(), new Filme(), getId(), s[0], LocalDateTime.parse(s[4]));
+            String tempSessao[] = this.connection.get(id, "sessoes");
+            Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
+            Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
+            return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), getId(), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
         } catch (Exception e) {
             System.out.println("Não existe na base de dados");
             return null;
+        }
+    }
+
+    public boolean editar(Sessao sessao) throws IOException{
+        String novaSessao =  Integer.toString(sessao.getId()) + ";" + "filme" + ";" + sessao.getStatus() + ";" + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" +  "sala";
+        if(this.connection.put(novaSessao.toLowerCase(), "sessoes")){
+            return true;
+        }else{
+            return false;
+        }
+    } 
+
+
+    public ArrayList<Sessao> listar()throws IOException{
+        try {
+            ArrayList<String> stringSessao = this.connection.getAll("sessoes");
+            ArrayList<Sessao> sessoes = new ArrayList<>();
+
+            for (String sessao : stringSessao) {
+                String[] tempSessao = sessao.split(";");
+                Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
+                Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
+                
+                Sessao a = new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), Integer.parseInt(tempSessao[0]), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
+                sessoes.add(a);
+            }
+
+            return sessoes;
+        } catch (Exception e) {
+            System.out.println("Erro ao obter os dados");
+            throw e;
         }
     }
 

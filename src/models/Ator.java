@@ -26,8 +26,8 @@ public class Ator extends Pessoa {
 
     // Métodos da classe
     public boolean cadastrar() throws IOException {
-        String novoAtor = Integer.toString(this.registro).toLowerCase() + ";" + this.getNome().toLowerCase() + ";"
-                + this.getCpf().toLowerCase() + ";" + this.getEmail().toLowerCase();
+        String novoAtor = Integer.toString(this.registro) + ";" + this.getNome()+ ";"
+                + this.getCpf() + ";" + this.getEmail();
         if (this.connection.post(novoAtor, "atores")) {
             return true;
         } else {
@@ -36,7 +36,7 @@ public class Ator extends Pessoa {
     }
 
     public boolean editar(Ator ator) throws IOException {
-        String novoAtor = Integer.toString(ator.getRegistro()).toLowerCase() + ";" + ator.getNome().toLowerCase() + ";" + ator.getCpf().toLowerCase() + ";" + ator.getEmail().toLowerCase();
+        String novoAtor = Integer.toString(ator.getRegistro()) + ";" + ator.getNome() + ";" + ator.getCpf() + ";" + ator.getEmail();
 
         if (this.connection.put(novoAtor.toLowerCase(), "atores")) {
             return true;

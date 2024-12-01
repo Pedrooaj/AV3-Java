@@ -41,11 +41,11 @@ public class Funcionario extends Pessoa {
 
     public boolean editar(Funcionario funcionario) throws IOException {
 
-        String novoFuncionario = Integer.toString(funcionario.getMatricula()).toLowerCase() + ";"
-                + funcionario.getNome().toLowerCase() + ";" + funcionario.getCpf().toLowerCase() + ";"
-                + funcionario.getEmail().toLowerCase() + ";" + funcionario.getHoraTrabalho();
+        String novoFuncionario = Integer.toString(funcionario.getMatricula()) + ";"
+                + funcionario.getNome()+ ";" + funcionario.getCpf() + ";"
+                + funcionario.getEmail() + ";" + funcionario.getHoraTrabalho();
 
-        if (this.connection.put(novoFuncionario.toLowerCase(), "funcionarios")) {
+        if (this.connection.put(novoFuncionario, "funcionarios")) {
             return true;
         } else {
             return false;

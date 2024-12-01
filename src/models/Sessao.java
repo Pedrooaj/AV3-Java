@@ -25,43 +25,55 @@ public class Sessao {
         this.funcionario = funcionario;
     }
 
-    public Sessao(int id){
+    public Sessao(int id) {
         this.id = id;
         this.connection = new Connection<Sessao>();
     }
 
-    public Sessao(){
+    public Sessao() {
         this.connection = new Connection<Sessao>();
     }
 
     public boolean cadastrar() throws IOException {
-        String novaSessao =  Integer.toString(this.getId()) + ";" + "filme" + ";" + this.getStatus() + ";"
-                + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";" + Integer.toString(this.getSala().getId());
+        try {
+            String novaSessao = Integer.toString(this.getId()) + ";" + "filme" + ";" + this.getStatus() + ";"
+                    + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";"
+                    + Integer.toString(this.getSala().getId());
 
-        return this.connection.post(novaSessao.toLowerCase(), "sessoes");
+            return this.connection.post(novaSessao.toLowerCase(), "sessoes");
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar Sessão");
+            return false;
+        }
 
     }
 
-    public Sessao consultar(Sessao sessao) throws IOException{
+    public Sessao consultar(Sessao sessao) throws IOException {
         try {
             String id = Integer.toString(sessao.getId());
             String tempSessao[] = this.connection.get(id, "sessoes");
             Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
             Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
-            return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), getId(), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
-        } catch (ArrayIndexOutOfBoundsException e) {
+            return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), getId(),
+                    tempSessao[2], LocalDateTime.parse(tempSessao[4]));
+        } catch (NullPointerException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
     }
 
-    public boolean editar(Sessao sessao) throws IOException{
-        String novaSessao =  Integer.toString(sessao.getId()) + ";" + "filme" + ";" + sessao.getStatus() + ";" + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" +  "sala";
-        return this.connection.put(novaSessao.toLowerCase(), "sessoes");
-    } 
+    public boolean editar(Sessao sessao) throws IOException {
+        try {
+            String novaSessao = Integer.toString(sessao.getId()) + ";" + "filme" + ";" + sessao.getStatus() + ";"
+            + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" + "sala";
+    return this.connection.put(novaSessao.toLowerCase(), "sessoes");
+        } catch (Exception e) {
+            System.out.println("Erro ao editar Sessão");
+            return false;
+        }
+    }
 
-
-    public ArrayList<Sessao> listar()throws IOException{
+    public ArrayList<Sessao> listar() throws IOException {
         try {
             ArrayList<String> stringSessao = this.connection.getAll("sessoes");
             ArrayList<Sessao> sessoes = new ArrayList<>();
@@ -70,13 +82,14 @@ public class Sessao {
                 String[] tempSessao = sessao.split(";");
                 Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
                 Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
-                
-                Sessao a = new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), Integer.parseInt(tempSessao[0]), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
+
+                Sessao a = new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(),
+                        Integer.parseInt(tempSessao[0]), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
                 sessoes.add(a);
             }
 
             return sessoes;
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Erro ao obter os dados");
             throw e;
         }

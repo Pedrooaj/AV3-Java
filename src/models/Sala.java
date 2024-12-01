@@ -32,10 +32,16 @@ public class Sala {
     }
 
     public boolean cadastrar() throws IOException {
-        String novaSala = Integer.toString(this.id) + ";" + Integer.toString(this.capacidade) + ";" + this.status + ";"
-                + this.descricao;
+        try {
+            String novaSala = Integer.toString(this.id) + ";" + Integer.toString(this.capacidade) + ";" + this.status
+                    + ";"
+                    + this.descricao;
 
-        return this.connection.post(novaSala.toLowerCase(), "salas");
+            return this.connection.post(novaSala.toLowerCase(), "salas");
+        } catch (Exception e) {
+            System.out.println("Erro ao Cadastrar Sala");
+            return false;
+        }
 
     }
 
@@ -44,26 +50,33 @@ public class Sala {
             String id = Integer.toString(sala.getId());
             String s[] = this.connection.get(id, "salas");
             return new Sala(Integer.parseInt(s[0]), Integer.parseInt(s[1]), s[3], s[2]);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
     }
 
     public boolean editar(Sala sala) throws IOException {
-        String novaSala = Integer.toString(sala.getId()) + ";" + Integer.toString(sala.getCapacidade()) + ";" + sala.getStatus() + ";" + sala.getDescricao();
-        return this.connection.put(novaSala.toLowerCase(), "salas");
+        try {
+            String novaSala = Integer.toString(sala.getId()) + ";" + Integer.toString(sala.getCapacidade()) + ";"
+            + sala.getStatus() + ";" + sala.getDescricao();
+    return this.connection.put(novaSala.toLowerCase(), "salas");
+        } catch (Exception e) {
+            System.out.println("Erro ao editar Sala");
+            return false;
+        }
 
     }
 
-    public ArrayList<Sala> listar() throws IOException{
+    public ArrayList<Sala> listar() throws IOException {
         try {
             ArrayList<String> stringSala = this.connection.getAll("salas");
             ArrayList<Sala> salas = new ArrayList<>();
 
             for (String s : stringSala) {
                 String[] tempSala = s.split(";");
-                Sala a = new Sala(Integer.parseInt(tempSala[0]), Integer.parseInt(tempSala[1]), tempSala[3], tempSala[2]);
+                Sala a = new Sala(Integer.parseInt(tempSala[0]), Integer.parseInt(tempSala[1]), tempSala[3],
+                        tempSala[2]);
                 salas.add(a);
             }
 

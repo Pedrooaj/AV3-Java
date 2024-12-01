@@ -22,26 +22,37 @@ public class Funcionario extends Pessoa {
         this.connection = new Connection<Funcionario>();
     }
 
-    public Funcionario(){
+    public Funcionario() {
         this.connection = new Connection<Funcionario>();
     }
 
     // Métodos da classe
 
     public boolean cadastrar() throws IOException {
-        String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail() + ";"
-                + getHoraTrabalho();
-        return this.connection.post(novoFuncionario, "funcionarios");
+        try {
+            String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail()
+                    + ";"
+                    + getHoraTrabalho();
+            return this.connection.post(novoFuncionario, "funcionarios");
 
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar na Base de Dados");
+            return false;
+        }
     }
 
     public boolean editar(Funcionario funcionario) throws IOException {
+        try {
 
-        String novoFuncionario = Integer.toString(funcionario.getMatricula()) + ";"
-                + funcionario.getNome()+ ";" + funcionario.getCpf() + ";"
-                + funcionario.getEmail() + ";" + funcionario.getHoraTrabalho();
+            String novoFuncionario = Integer.toString(funcionario.getMatricula()) + ";"
+                    + funcionario.getNome() + ";" + funcionario.getCpf() + ";"
+                    + funcionario.getEmail() + ";" + funcionario.getHoraTrabalho();
 
-        return this.connection.put(novoFuncionario, "funcionarios");
+            return this.connection.put(novoFuncionario, "funcionarios");
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar na base de dados");
+            return false;
+        }
     }
 
     public Funcionario consultar(Funcionario funcionario) throws IOException {
@@ -49,23 +60,24 @@ public class Funcionario extends Pessoa {
             String id = Integer.toString(funcionario.getMatricula()).toLowerCase();
             String[] a = this.connection.get(id, "funcionarios");
             return new Funcionario(a[1], a[2], a[3], LocalTime.parse(a[4]), Integer.parseInt(a[0]));
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
     }
 
-    public ArrayList<Funcionario> listar() throws IOException{
+    public ArrayList<Funcionario> listar() throws IOException {
         try {
             ArrayList<String> stringFuncionarios = this.connection.getAll("funcionarios");
             ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
             for (String f : stringFuncionarios) {
                 String[] tempFuncionario = f.split(";");
-                Funcionario funcionario = new Funcionario(tempFuncionario[1],tempFuncionario[2],tempFuncionario[3] , LocalTime.parse(tempFuncionario[4]), Integer.parseInt(tempFuncionario[0]));
+                Funcionario funcionario = new Funcionario(tempFuncionario[1], tempFuncionario[2], tempFuncionario[3],
+                        LocalTime.parse(tempFuncionario[4]), Integer.parseInt(tempFuncionario[0]));
                 funcionarios.add(funcionario);
             }
- 
+
             return funcionarios;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Erro ao obter os dados");

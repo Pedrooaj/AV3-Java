@@ -26,14 +26,25 @@ public class Ator extends Pessoa {
 
     // Métodos da classe
     public boolean cadastrar() throws IOException {
-        String novoAtor = Integer.toString(this.registro) + ";" + this.getNome()+ ";"
-                + this.getCpf() + ";" + this.getEmail();
-        return this.connection.post(novoAtor, "atores");
+        try {
+            String novoAtor = Integer.toString(this.registro) + ";" + this.getNome() + ";"
+                    + this.getCpf() + ";" + this.getEmail();
+            return this.connection.post(novoAtor, "atores");
+        } catch (Exception e) {
+            System.out.println("Erro ao Cadastrar Ator");
+            return false;
+        }
     }
 
     public boolean editar(Ator ator) throws IOException {
-        String novoAtor = Integer.toString(ator.getRegistro()) + ";" + ator.getNome() + ";" + ator.getCpf() + ";" + ator.getEmail();
-        return this.connection.put(novoAtor.toLowerCase(), "atores");
+        try {
+            String novoAtor = Integer.toString(ator.getRegistro()) + ";" + ator.getNome() + ";" + ator.getCpf() + ";"
+                    + ator.getEmail();
+            return this.connection.put(novoAtor.toLowerCase(), "atores");
+        } catch (Exception e) {
+            System.out.println("Erro ao Editar Ator");
+            return false;
+        }
     }
 
     public Ator consultar(Ator ator) throws IOException {
@@ -41,7 +52,7 @@ public class Ator extends Pessoa {
             String id = Integer.toString(ator.getRegistro()).toLowerCase();
             String[] a = this.connection.get(id, "atores");
             return new Ator(a[1], a[2], a[3], Integer.parseInt(a[0]));
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }

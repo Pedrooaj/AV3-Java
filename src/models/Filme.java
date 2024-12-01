@@ -32,15 +32,27 @@ public class Filme {
     }
 
     public boolean cadastrar() throws IOException {
-        String novoFilme = Integer.toString(this.getIdFilme()) + ";" + this.getTitulo() + ";" + this.getStatus() + ";"
-                + "genero" + ";" + Integer.toString(this.getClassificacao());
-        return this.connection.post(novoFilme, "filmes");
+        try {
+            String novoFilme = Integer.toString(this.getIdFilme()) + ";" + this.getTitulo() + ";" + this.getStatus()
+                    + ";"
+                    + "genero" + ";" + Integer.toString(this.getClassificacao());
+            return this.connection.post(novoFilme, "filmes");
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar na base de Dados");
+            return false;
+        }
     }
 
     public boolean editar(Filme filme) throws IOException {
-        String novoFilme = filme.getIdFilme() + ";" + filme.getTitulo() + ";" + filme.getStatus() + ";" + "genero" + ";"
-                + filme.getClassificacao();
-        return this.connection.put(novoFilme, "filmes");
+        try {
+            String novoFilme = filme.getIdFilme() + ";" + filme.getTitulo() + ";" + filme.getStatus() + ";" + "genero"
+                    + ";"
+                    + filme.getClassificacao();
+            return this.connection.put(novoFilme, "filmes");
+        } catch (Exception e) {
+            System.out.println("Erro ao Editar Filme");
+            return false;
+        }
     }
 
     public Filme consultar(Filme filme) throws IOException {
@@ -48,9 +60,9 @@ public class Filme {
             String id = Integer.toString(filme.getIdFilme());
             String[] f = this.connection.get(id, "filmes");
             return new Filme(Integer.parseInt(f[0]), f[1], Integer.parseInt(f[4]), f[3], new Genero());
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println("Não existe na base de dados");
-            throw e;
+            return null;
         }
     }
 

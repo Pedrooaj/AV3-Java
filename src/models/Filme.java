@@ -35,7 +35,7 @@ public class Filme {
         try {
             String novoFilme = Integer.toString(this.getIdFilme()) + ";" + this.getTitulo() + ";" + this.getStatus()
                     + ";"
-                    + "genero" + ";" + Integer.toString(this.getClassificacao());
+                    + this.getGenero().getId() + ";" + Integer.toString(this.getClassificacao());
             return this.connection.post(novoFilme, "filmes");
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar na base de Dados");
@@ -45,8 +45,7 @@ public class Filme {
 
     public boolean editar(Filme filme) throws IOException {
         try {
-            String novoFilme = filme.getIdFilme() + ";" + filme.getTitulo() + ";" + filme.getStatus() + ";" + "genero"
-                    + ";"
+            String novoFilme = filme.getIdFilme() + ";" + filme.getTitulo() + ";" + filme.getStatus() + ";" + filme.getGenero().getId() + ";"
                     + filme.getClassificacao();
             return this.connection.put(novoFilme, "filmes");
         } catch (Exception e) {
@@ -59,8 +58,9 @@ public class Filme {
         try {
             String id = Integer.toString(filme.getIdFilme());
             String[] f = this.connection.get(id, "filmes");
-            return new Filme(Integer.parseInt(f[0]), f[1], Integer.parseInt(f[4]), f[3], new Genero());
-        } catch (NullPointerException e) {
+            Genero genero = new Genero(Integer.parseInt(f[3]));
+            return new Filme(Integer.parseInt(f[0]), f[1], Integer.parseInt(f[4]), f[3], genero.consultar(genero));
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
@@ -73,7 +73,8 @@ public class Filme {
 
             for (String filme : stringFilmes) {
                 String[] f = filme.split(";");
-                Filme a = new Filme(Integer.parseInt(f[0]), f[1], Integer.parseInt(f[4]), f[3], new Genero());
+                Genero genero = new Genero(Integer.parseInt(f[3]));
+                Filme a = new Filme(Integer.parseInt(f[0]), f[1], Integer.parseInt(f[4]),f[2], genero.consultar(genero));
                 filmes.add(a);
             }
 

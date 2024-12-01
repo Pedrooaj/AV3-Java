@@ -60,7 +60,7 @@ public class Funcionario extends Pessoa {
             String id = Integer.toString(funcionario.getMatricula()).toLowerCase();
             String[] a = this.connection.get(id, "funcionarios");
             return new Funcionario(a[1], a[2], a[3], LocalTime.parse(a[4]), Integer.parseInt(a[0]));
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }

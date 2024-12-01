@@ -36,12 +36,13 @@ public class Sessao {
 
     public boolean cadastrar() throws IOException {
         try {
-            String novaSessao = Integer.toString(this.getId()) + ";" + "filme" + ";" + this.getStatus() + ";"
+            String novaSessao = Integer.toString(this.getId()) + ";" + this.getFilme().getIdFilme() + ";" + this.getStatus() + ";"
                     + Integer.toString(this.getFuncionario().getMatricula()) + ";" + this.getDataHora() + ";"
                     + Integer.toString(this.getSala().getId());
 
             return this.connection.post(novaSessao.toLowerCase(), "sessoes");
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("Erro ao cadastrar Sessão");
             return false;
         }
@@ -54,9 +55,10 @@ public class Sessao {
             String tempSessao[] = this.connection.get(id, "sessoes");
             Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
             Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
-            return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(), getId(),
+            Filme filme = new Filme(Integer.parseInt(tempSessao[1]));
+            return new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), filme.consultar(filme), sessao.getId(),
                     tempSessao[2], LocalDateTime.parse(tempSessao[4]));
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }
@@ -64,8 +66,8 @@ public class Sessao {
 
     public boolean editar(Sessao sessao) throws IOException {
         try {
-            String novaSessao = Integer.toString(sessao.getId()) + ";" + "filme" + ";" + sessao.getStatus() + ";"
-            + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" + "sala";
+            String novaSessao = Integer.toString(sessao.getId()) + ";" + sessao.getFilme() + ";" + sessao.getStatus() + ";"
+            + Integer.toString(sessao.getFuncionario().getMatricula()) + ";" + sessao.getDataHora() + ";" + sessao.getSala();
     return this.connection.put(novaSessao.toLowerCase(), "sessoes");
         } catch (Exception e) {
             System.out.println("Erro ao editar Sessão");
@@ -82,8 +84,9 @@ public class Sessao {
                 String[] tempSessao = sessao.split(";");
                 Funcionario funcionario = new Funcionario(Integer.parseInt(tempSessao[3]));
                 Sala sala = new Sala(Integer.parseInt(tempSessao[5]));
+                Filme filme = new Filme(Integer.parseInt(tempSessao[1]));
 
-                Sessao a = new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), new Filme(),
+                Sessao a = new Sessao(funcionario.consultar(funcionario), sala.consultar(sala), filme.consultar(filme),
                         Integer.parseInt(tempSessao[0]), tempSessao[2], LocalDateTime.parse(tempSessao[4]));
                 sessoes.add(a);
             }

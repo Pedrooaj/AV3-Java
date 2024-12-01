@@ -50,7 +50,7 @@ public class Sala {
             String id = Integer.toString(sala.getId());
             String s[] = this.connection.get(id, "salas");
             return new Sala(Integer.parseInt(s[0]), Integer.parseInt(s[1]), s[3], s[2]);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }

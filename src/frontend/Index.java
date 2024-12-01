@@ -44,7 +44,7 @@ public class Index {
                 this.menuFilme();
             }
             if (escolha.equals("4")) {
-                System.out.println("Menu genero");
+                this.menuGenero();
             }
             if (escolha.equals("5")) {
                 this.menuSessao();
@@ -369,6 +369,8 @@ public class Index {
                 String funcionarioID;
                 String salaID;
                 Sala sala;
+        
+                String filmeID;
                 String status;
                 String id;
                 String date;
@@ -419,7 +421,7 @@ public class Index {
                         System.out.println("O ID deve ser Númerico");
                     }
                 }
-
+                System.out.println("----------------------------------------");
                 while (true) {
                     System.out.println("Digite um id de Sala");
                     salaID = this.scanner.nextLine();
@@ -435,6 +437,24 @@ public class Index {
                         System.out.println("O ID deve ser Númerico");
                     }
                 }
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite um id de Filme");
+                    filmeID = this.scanner.nextLine();
+                    if (filmeID.matches("\\d+")) {
+                        Filme filme = new Filme(Integer.parseInt(filmeID));
+                        if (filme.consultar(filme) != null) {
+                            break;
+                        } else {
+                            System.out.println("Digite um Filme Válido");
+                            System.out.println("----------------------------------------");
+                        }
+                    } else {
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+
+
 
                 System.out.println("----------------------------------------");
                 System.out.println("Digite um Status Ativo/Inativo");
@@ -448,7 +468,7 @@ public class Index {
                     }
                 }
 
-                Sessao sessao = new Sessao(new Funcionario(Integer.parseInt(funcionarioID)), sala, null,
+                Sessao sessao = new Sessao(new Funcionario(Integer.parseInt(funcionarioID)), new Sala(Integer.parseInt(salaID)), new Filme(Integer.parseInt(filmeID)),
                         Integer.parseInt(id), status, LocalDateTime.parse(date));
                 sessao.cadastrar();
             } else if (escolha.equals("2")) {
@@ -545,7 +565,7 @@ public class Index {
                     System.out.println("----------------------------------------");
                     System.out.println("Id: " + info.getId());
                     System.out.println("Sala: " + info.getSala().getDescricao());
-                    System.out.println("Filme:  " + info.getFilme());
+                    System.out.println("Filme:  " + info.getFilme().getTitulo());
                     System.out.println("Status: " + info.getStatus());
                     System.out.println("Hórario/Data: " + dataFormater.format(info.getDataHora()));
                     System.out.println("Funcionario: " + info.getFuncionario().getNome());
@@ -728,6 +748,8 @@ public class Index {
                 String id;
                 String status;
                 String generoID;
+                Genero genero;
+                
                 System.out.println("Cadastrando filme");
                 System.out.println("----------------------------------------");
                 while (true) {
@@ -746,7 +768,7 @@ public class Index {
                 while (true) {
                     System.out.println("Digite a Classificação");
                     classificacao = this.scanner.nextLine();
-                    if (id.matches("\\d+")) {
+                    if (classificacao.matches("\\d+")) {
                         break;
                     } else {
                         System.out.println("A classificação deve ser Númerica");
@@ -765,24 +787,22 @@ public class Index {
                 }
                 System.out.println("----------------------------------------");
                 while (true) {
-                    System.out.println("Digite um id de Sala");
+                    System.out.println("Digite um id de um Gênero");
                     generoID = this.scanner.nextLine();
                     if (generoID.matches("\\d+")) {
-                        // genero = new Genero(Integer.parseInt(salaID));
-                        // if (genero.consultar(genero) != null) {
-                        // break;
-                        // } else {
-                        // System.out.println("Digite um Gênero Válido");
-                        // System.out.println("----------------------------------------");
-                        // }
-                        break;
+                        genero = new Genero(Integer.parseInt(generoID));
+                        if (genero.consultar(genero) != null) {
+                            break;
+                        } else {
+                            System.out.println("Digite um Gênero Válido");
+                            System.out.println("----------------------------------------");
+                        }
                     } else {
                         System.out.println("O ID deve ser Númerico");
                     }
                 }
 
-                Filme filme = new Filme(Integer.parseInt(id), titulo, Integer.parseInt(classificacao), status,
-                        new Genero());
+                Filme filme = new Filme(Integer.parseInt(id), titulo, Integer.parseInt(classificacao), status, genero);
                 filme.cadastrar();
             } else if (escolha.equals("2")) {
                 String titulo;
@@ -790,6 +810,7 @@ public class Index {
                 String id;
                 String status;
                 String generoID;
+                Genero genero;
                 System.out.println("Editando Filme");
                 System.out.println("----------------------------------------");
                 while (true) {
@@ -808,7 +829,7 @@ public class Index {
                 while (true) {
                     System.out.println("Digite a Classificação");
                     classificacao = this.scanner.nextLine();
-                    if (id.matches("\\d+")) {
+                    if (classificacao.matches("\\d+")) {
                         break;
                     } else {
                         System.out.println("A classificação deve ser Númerica");
@@ -830,26 +851,26 @@ public class Index {
                     System.out.println("Digite um id de Sala");
                     generoID = this.scanner.nextLine();
                     if (generoID.matches("\\d+")) {
-                        // genero = new Genero(Integer.parseInt(salaID));
-                        // if (genero.consultar(genero) != null) {
-                        // break;
-                        // } else {
-                        // System.out.println("Digite um Gênero Válido");
-                        // System.out.println("----------------------------------------");
-                        // }
+                        genero = new Genero(Integer.parseInt(generoID));
+                        if (genero.consultar(genero) != null) {
+                            break;
+                        } else {
+                            System.out.println("Digite um Gênero Válido");
+                            System.out.println("----------------------------------------");
+                        }
                         break;
                     } else {
                         System.out.println("O ID deve ser Númerico");
                     }
                 }
 
-                Filme filme = new Filme(Integer.parseInt(id), titulo, Integer.parseInt(classificacao), status,
-                        new Genero());
+                Filme filme = new Filme(Integer.parseInt(id), titulo, Integer.parseInt(classificacao), status, genero);
                 filme.editar(filme);
             } else if (escolha.equals("3")) {
                 String id;
                 while (true) {
                     try {
+                        
                         System.out.println("Consultar Filme");
                         System.out.println("----------------------------------------");
                         System.out.println("ID que deseja Consultar");
@@ -867,7 +888,7 @@ public class Index {
                 System.out.println("----------------------------------------");
                 System.out.println("ID: " + info.getIdFilme());
                 System.out.println("Titulo: " + info.getTitulo());
-                System.out.println("Gênero: " + info.getGenero());
+                System.out.println("Gênero: " + info.getGenero().getDescricao());
                 System.out.println("Classificação: " + info.getClassificacao());
                 System.out.println("Status: " + info.getStatus());
 
@@ -879,7 +900,7 @@ public class Index {
                     for (Filme filme : filmes.listar()) {
                         System.out.println("ID: " + filme.getIdFilme());
                         System.out.println("Titulo: " + filme.getTitulo());
-                        System.out.println("Gênero: " + filme.getGenero());
+                        System.out.println("Gênero: " + filme.getGenero().getDescricao());
                         System.out.println("Classificação: " + filme.getClassificacao());
                         System.out.println("Status: " + filme.getStatus());
                         System.out.println("----------------------------------------");
@@ -892,9 +913,127 @@ public class Index {
         }
     }
 
+    public void menuGenero() throws IOException {
+        while (true) {
+            String escolha;
+            System.out.println("----------------------------------------");
+            System.out.println("Menu de Gênero");
+            System.out.println("----------------------------------------");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Editar");
+            System.out.println("3 - Consultar");
+            System.out.println("4 - Listar");
+            System.out.println("0 - Voltar");
+            System.out.println("----------------------------------------");
+            escolha = this.scanner.nextLine();
 
-    public void menuGenero() throws IOException{
-        
+            if (escolha.equals("1")) {
+                String id;
+                String descricao;
+                String status;
+                System.out.println("Cadastrando Genero");
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite o ID do Genero");
+                    id = this.scanner.nextLine();
+                    if (id.matches("\\d+")) {
+                        break;
+                    } else {
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                System.out.println("Digite a descrição do Gênero");
+                descricao = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite um Status Ativo/Inativo");
+                    status = this.scanner.nextLine();
+                    if (status.toLowerCase().equals("ativo") || status.toLowerCase().equals("inativo")) {
+                        status = status.toLowerCase();
+                        break;
+                    } else {
+                        System.out.println("Status Válido são apenas Ativo/Inativo");
+                    }
+                }
+                System.out.println("----------------------------------------");
+
+                Genero genero = new Genero(Integer.parseInt(id), descricao, status);
+                genero.cadastrar();
+            } else if (escolha.equals("2")) {
+                String id;
+                String descricao;
+                String status;
+                System.out.println("Editando Gênero");
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite o ID do Genero");
+                    id = this.scanner.nextLine();
+                    if (id.matches("\\d+")) {
+                        break;
+                    } else {
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                System.out.println("Digite a descrição do Gênero");
+                descricao = this.scanner.nextLine();
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite um Status Ativo/Inativo");
+                    status = this.scanner.nextLine();
+                    if (status.toLowerCase().equals("ativo") || status.toLowerCase().equals("inativo")) {
+                        status = status.toLowerCase();
+                        break;
+                    } else {
+                        System.out.println("Status Válido são apenas Ativo/Inativo");
+                    }
+                }
+                System.out.println("----------------------------------------");
+                Genero genero = new Genero(Integer.parseInt(id), descricao, status);
+                genero.editar(genero);
+
+            } else if (escolha.equals("3")) {
+                String id;
+                System.out.println("Consultando Gênero");
+                System.out.println("----------------------------------------");
+                while (true) {
+                    System.out.println("Digite o ID do Genero");
+                    id = this.scanner.nextLine();
+                    if (id.matches("\\d+")) {
+                        break;
+                    } else {
+                        System.out.println("O ID deve ser Númerico");
+                    }
+                }
+
+                Genero genero = new Genero(Integer.parseInt(id));
+                Genero info = genero.consultar(genero);
+
+                if (info != null) {
+                    System.out.println("ID: " + info.getId());
+                    System.out.println("Descrição: " + info.getDescricao());
+                    System.out.println("Status: " + info.getStatus());
+                }
+
+            } else if (escolha.equals("4")) {
+
+                System.out.println("\nLista de Gênero");
+                System.out.println("----------------------------------------");
+                Genero generos = new Genero();
+                if (generos != null) {
+                    for (Genero info : generos.listar()) {
+                        System.out.println("ID: " + info.getId());
+                        System.out.println("Descrição: " + info.getDescricao());
+                        System.out.println("Status: " + info.getStatus());
+                        System.out.println("----------------------------------------");
+                    }
+                }
+
+            } else if (escolha.equals("0")) {
+                break;
+            }
+        }
     }
 
     public void Duvidas() {

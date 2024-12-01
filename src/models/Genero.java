@@ -53,8 +53,8 @@ public class Genero {
         try {
             String id = Integer.toString(genero.getId());
             String[] g = this.connection.get(id, "generos");
-            return new Genero(Integer.parseInt(g[0]), g[1], g[3]);
-        } catch (NullPointerException e) {
+            return new Genero(Integer.parseInt(g[0]), g[1], g[2]);
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Não existe na base de dados");
             return null;
         }

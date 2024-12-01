@@ -1,0 +1,2 @@
+1;Ação;ativo
+2;Luta;ativo

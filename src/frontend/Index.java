@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import java.util.Scanner;
 
-
 public class Index {
     private Scanner scanner;
     private MenuAtor menuAtor;
@@ -13,6 +12,9 @@ public class Index {
     private MenuSala menuSala;
     private MenuFilme menuFilme;
     private MenuGenero menuGenero;
+    private MenuAtorFilme menuAtorFilme;
+    private MenuTipoAssento menuTipoAssento;
+    private MenuAssento menuAssento;
 
     public Index() {
         this.scanner = new Scanner(System.in);
@@ -22,6 +24,10 @@ public class Index {
         this.menuSala = new MenuSala();
         this.menuFilme = new MenuFilme();
         this.menuGenero = new MenuGenero();
+        this.menuAtorFilme = new MenuAtorFilme();
+        this.menuTipoAssento = new MenuTipoAssento();
+        this.menuAssento = new MenuAssento();
+
     }
 
     public void iniciarMenu() throws IOException {
@@ -29,10 +35,12 @@ public class Index {
             System.out.println("----------------------------------------");
             System.out.println("Seja Bem Vindo há aplicação de Pedrooaj!");
             System.out.println("----------------------------------------");
-            System.out.println("1 - Atores            5 - Sessão");
-            System.out.println("2 - Funcionarios      6 - Sala");
-            System.out.println("3 - Filme             7 - Dúvidas");
-            System.out.println("4 - Gênero            0 - Sair");
+            System.out.println("1 - Atores            7  - Filme-Ator");
+            System.out.println("2 - Funcionarios      8  - Tipo-Assento");
+            System.out.println("3 - Filme             9  - Assento");
+            System.out.println("4 - Gênero            10 - Dúvidas");
+            System.out.println("5 - Sessão            ");
+            System.out.println("6 - Sala              0  - Sair");
             System.out.println("----------------------------------------");
             String escolha = this.scanner.nextLine();
 
@@ -49,7 +57,8 @@ public class Index {
                 this.menuFilme.menuFilme(this.scanner);
             }
             if (escolha.equals("4")) {
-                this.menuGenero.menuGenero(this.scanner);            }
+                this.menuGenero.menuGenero(this.scanner);
+            }
             if (escolha.equals("5")) {
                 this.menuSessao.menuSessao(this.scanner);
             }
@@ -57,8 +66,20 @@ public class Index {
             if (escolha.equals("6")) {
                 this.menuSala.menuSala(this.scanner);
             }
-
             if (escolha.equals("7")) {
+                this.menuAtorFilme.menuFilmeAtor(this.scanner);
+                
+            }
+
+            if (escolha.equals("8")) {
+                this.menuTipoAssento.menuTipoAssento(scanner);
+            }
+
+            if (escolha.equals("9")) {
+                this.menuAssento.menuAssento(scanner);
+            }
+
+            if (escolha.equals("10")) {
                 this.Duvidas();
             }
 
@@ -69,18 +90,6 @@ public class Index {
 
         }
     }
-
-    
-
-   
-
-    
-
-    
-
-    
-
-   
 
     public void Duvidas() {
         while (true) {

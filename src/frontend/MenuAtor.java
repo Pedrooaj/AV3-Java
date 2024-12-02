@@ -106,7 +106,6 @@ public class MenuAtor {
                             System.out.println("Id válidos contem somente números!");
                         }
                     } catch (NumberFormatException e) {
-
                         throw e;
                     }
                 }

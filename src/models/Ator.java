@@ -25,7 +25,7 @@ public class Ator extends Pessoa {
     }
 
     // Métodos da classe
-    public boolean cadastrar() throws IOException {
+    public boolean cadastrar() {
         try {
             String novoAtor = Integer.toString(this.registro) + ";" + this.getNome() + ";"
                     + this.getCpf() + ";" + this.getEmail();
@@ -36,7 +36,7 @@ public class Ator extends Pessoa {
         }
     }
 
-    public boolean editar(Ator ator) throws IOException {
+    public boolean editar(Ator ator) {
         try {
             String novoAtor = Integer.toString(ator.getRegistro()) + ";" + ator.getNome() + ";" + ator.getCpf() + ";"
                     + ator.getEmail();

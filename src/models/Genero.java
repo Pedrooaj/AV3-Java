@@ -27,7 +27,7 @@ public class Genero {
         this.connection = new Connection<Genero>();
     }
 
-    public boolean cadastrar() throws IOException {
+    public boolean cadastrar() {
         try {
             String novoGenero = this.id + ";" + this.descricao + ";" + this.status;
             return this.connection.post(novoGenero, "generos");
@@ -37,7 +37,7 @@ public class Genero {
         }
     }
 
-    public boolean editar(Genero genero) throws IOException {
+    public boolean editar(Genero genero) {
         try {
             String novoGenero = Integer.toString(genero.getId()) + ";" + genero.getDescricao() + ";"
                     + genero.getStatus();

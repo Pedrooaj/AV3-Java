@@ -31,7 +31,7 @@ public class Sala {
         this.connection = new Connection<Sala>();
     }
 
-    public boolean cadastrar() throws IOException {
+    public boolean cadastrar(){
         try {
             String novaSala = Integer.toString(this.id) + ";" + Integer.toString(this.capacidade) + ";" + this.status
                     + ";"
@@ -56,7 +56,7 @@ public class Sala {
         }
     }
 
-    public boolean editar(Sala sala) throws IOException {
+    public boolean editar(Sala sala) {
         try {
             String novaSala = Integer.toString(sala.getId()) + ";" + Integer.toString(sala.getCapacidade()) + ";"
             + sala.getStatus() + ";" + sala.getDescricao();

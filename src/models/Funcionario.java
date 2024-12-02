@@ -28,7 +28,7 @@ public class Funcionario extends Pessoa {
 
     // Métodos da classe
 
-    public boolean cadastrar() throws IOException {
+    public boolean cadastrar(){
         try {
             String novoFuncionario = Integer.toString(matricula) + ";" + getNome() + ";" + getCpf() + ";" + getEmail()
                     + ";"
@@ -41,7 +41,7 @@ public class Funcionario extends Pessoa {
         }
     }
 
-    public boolean editar(Funcionario funcionario) throws IOException {
+    public boolean editar(Funcionario funcionario){
         try {
 
             String novoFuncionario = Integer.toString(funcionario.getMatricula()) + ";"

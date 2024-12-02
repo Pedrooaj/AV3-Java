@@ -31,7 +31,7 @@ public class Filme {
         this.idFilme = idFilme;
     }
 
-    public boolean cadastrar() throws IOException {
+    public boolean cadastrar(){
         try {
             String novoFilme = Integer.toString(this.getIdFilme()) + ";" + this.getTitulo() + ";" + this.getStatus()
                     + ";"
@@ -43,7 +43,7 @@ public class Filme {
         }
     }
 
-    public boolean editar(Filme filme) throws IOException {
+    public boolean editar(Filme filme) {
         try {
             String novoFilme = filme.getIdFilme() + ";" + filme.getTitulo() + ";" + filme.getStatus() + ";" + filme.getGenero().getId() + ";"
                     + filme.getClassificacao();

@@ -31,7 +31,7 @@ public class Assento {
             return this.connection.post(novoTipoAssento.toLowerCase(), "assento");
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Erro ao cadastrar Sessão");
+            System.out.println("Erro ao cadastrar Assento");
             return false;
         }
     }
@@ -42,7 +42,7 @@ public class Assento {
             return this.connection.put(novoTipoAssento.toLowerCase(), "assento");
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Erro ao cadastrar Sessão");
+            System.out.println("Erro ao editar Assento");
             return false;
         }
     }

@@ -1,2 +1,2 @@
-1;20;ativo;sala 1
-2;0;inativo;sala 3
+1;30;ativo;sala 1
+2;100;ativo;sala 2

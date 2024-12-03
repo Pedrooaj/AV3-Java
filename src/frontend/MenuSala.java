@@ -117,10 +117,12 @@ public class MenuSala {
                 Sala sala = new Sala(Integer.parseInt(id));
                 Sala info = sala.consultar(sala);
                 System.out.println("----------------------------------------");
-                System.out.println("Id: " + info.getId());
-                System.out.println("Capacidade: " + info.getCapacidade());
-                System.out.println("Status: " + info.getStatus());
-                System.out.println("Descrição: " + info.getDescricao());
+                if(info != null){
+                    System.out.println("Id: " + info.getId());
+                    System.out.println("Capacidade: " + info.getCapacidade());
+                    System.out.println("Status: " + info.getStatus());
+                    System.out.println("Descrição: " + info.getDescricao());
+                }
             } else if (escolha.equals("4")) {
                 System.out.println("\nLista de Salas");
                 System.out.println("----------------------------------------");

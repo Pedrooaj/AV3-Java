@@ -165,11 +165,13 @@ public class MenuFilme {
                 Filme filme = new Filme(Integer.parseInt(id));
                 Filme info = filme.consultar(filme);
                 System.out.println("----------------------------------------");
-                System.out.println("ID: " + info.getIdFilme());
-                System.out.println("Titulo: " + info.getTitulo());
-                System.out.println("Gênero: " + info.getGenero().getDescricao());
-                System.out.println("Classificação: " + info.getClassificacao());
-                System.out.println("Status: " + info.getStatus());
+                if(info != null){
+                    System.out.println("ID: " + info.getIdFilme());
+                    System.out.println("Titulo: " + info.getTitulo());
+                    System.out.println("Gênero: " + info.getGenero().getDescricao());
+                    System.out.println("Classificação: " + info.getClassificacao());
+                    System.out.println("Status: " + info.getStatus());
+                }
 
             } else if (escolha.equals("4")) {
                 System.out.println("\nLista de Filmes");
